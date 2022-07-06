@@ -1,5 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Task, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  # Associations
+  it { should have_many(:labels)}
+  # Validation tests
+  pending "need to write validations!"
 end
