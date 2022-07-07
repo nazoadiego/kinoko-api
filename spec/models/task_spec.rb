@@ -8,6 +8,7 @@ RSpec.describe Task, type: :model do
   let!(:negative_minutes_task) { Task.create(title: 'Not reading Japanese!', minutes: -1)}
 
   # Associations tests
+  it { should have_many(:task_labels) }
   it { should have_many(:labels) }
 
   # Validation tests
