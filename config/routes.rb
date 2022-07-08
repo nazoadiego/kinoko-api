@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :work_sessions
   resources :task_labels
   resources :labels
   resources :tasks
