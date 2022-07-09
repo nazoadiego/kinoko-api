@@ -5,12 +5,12 @@ class LabelsController < ApplicationController
   def index
     @labels = Label.all
 
-    render json: @labels
+    render json: @labels, methods: %I[time_spent]
   end
 
   # GET /labels/1
   def show
-    render json: @label
+    render json: @label, methods: %I[time_spent]
   end
 
   # POST /labels

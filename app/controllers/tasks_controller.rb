@@ -5,12 +5,12 @@ class TasksController < ApplicationController
   def index
     @tasks = Task.all
 
-    render json: @tasks, methods: [:duration_in_hours]
+    render json: @tasks, methods: %I[duration_in_hours time_spent]
   end
 
   # GET /tasks/1
   def show
-    render json: @task, methods: [:duration_in_hours]
+    render json: @task, methods: %I[duration_in_hours time_spent]
   end
 
   # POST /tasks
