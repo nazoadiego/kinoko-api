@@ -18,6 +18,12 @@ RSpec.describe Label, type: :model do
     label.save!
     label
   end
+  let!(:read_label) do
+    label = Label.new(title: 'Reading')
+    label.tasks << [read_korean, read_japanese]
+    label.save!
+    label
+  end
 
   # Associations tests
   it { should have_many(:task_labels) }
@@ -27,13 +33,15 @@ RSpec.describe Label, type: :model do
   it { should validate_presence_of(:title) }
 
   # Methods
-  it 'returns the total of minutes spent for one work sessions' do
+  it 'returns the total minutes spent for one work sessions' do
     expect(japanese_label.time_spent).to eq(90)
   end
 
-  it 'returns the total of minutes spent for many work sessions' do
+  it 'returns the total minutes spent for many work sessions' do
     expect(korean_label.time_spent).to eq(120)
   end
 
-  # it returns the total of minutes spent when there are multiple tasks
+  it 'returns the total minutes spent when there are multiple tasks' do
+    expect(read_label.time_spent).to eq(210)
+  end
 end

@@ -6,11 +6,11 @@ class Task < ApplicationRecord
 
   # Validations
   validates :title, presence: true
-  validates :minutes, numericality: { greater_than_or_equal_to: 0 }
+  validates :minutes, presence: true, numericality: { greater_than: 0 }
 
   # Defaults
   attribute :completed, :boolean, default: false
-  attribute :minutes, :integer, default: 0
+  attribute :minutes, :integer, default: 25
 
   # Methods
   alias_attribute :completed?, :completed

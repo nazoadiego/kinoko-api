@@ -5,7 +5,7 @@ RSpec.describe Task, type: :model do
   let!(:read_japanese) { Task.create!(title: 'Read Japanese', minutes: 62) }
   let!(:read_korean) { Task.create!(title: 'Read Japanese', minutes: 61) }
   let!(:read_chinese) { Task.create!(title: 'Read Japanese', minutes: 60) }
-  let!(:negative_minutes_task) { Task.create(title: 'Not reading Japanese!', minutes: -1)}
+  let!(:negative_minutes_task) { Task.create(title: 'Not reading Japanese!', minutes: -1) }
   let!(:sixty_mins_work) { WorkSession.create(task: read_japanese, minutes: 60) }
   let!(:thirty_mins_work) { WorkSession.create(task: read_japanese, minutes: 30) }
 
@@ -16,8 +16,9 @@ RSpec.describe Task, type: :model do
 
   # Validation tests
   it { should validate_presence_of(:title) }
+  it { should validate_presence_of(:minutes) }
   it { expect(negative_minutes_task).to be_invalid }
-  # Should you be able to create a task with 0 minutes?
+  it { should validate_numericality_of(:minutes).is_greater_than(0) }
 
   # Method tests
   it 'returns the duration in hours and minutes' do
