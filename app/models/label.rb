@@ -5,4 +5,8 @@ class Label < ApplicationRecord
 
   # Validations
   validates :title, presence: true
+
+  def time_spent
+    tasks.inject(0) { |total, task| total + task.time_spent }
+  end
 end

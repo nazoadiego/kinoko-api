@@ -18,7 +18,11 @@ class Task < ApplicationRecord
   def duration_in_hours
     return "#{minutes / 60}h" if (minutes % 60).zero?
 
-    "#{minutes / 60}h #{pluralize("min", minutes % 60)}"
+    "#{minutes / 60}h #{pluralize('min', minutes % 60)}"
+  end
+
+  def time_spent
+    work_sessions.inject(0) { |total, session| total + session.minutes }
   end
 
   private
