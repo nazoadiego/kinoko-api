@@ -17,8 +17,13 @@ RSpec.describe "/tasks", type: :request do
   # Task. As you add validations to Task, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) { { title: 'Reading Japanese' } }
-
   let(:invalid_attributes) { { title: '', minutes: -1 } }
+
+  let(:korean_label) { create(:label, title: 'korean') }
+  let(:read_label) { create(:label, title: 'read') }
+  let(:task_one_label) { { title: 'Reading Korean', labels: [korean_label] } }
+  let(:task_two_labels) { { title: 'Reading Korean', labels: [korean_label, read_label] } }
+
 
   # This should return the minimal set of values that should be in the headers
   # in order to pass any filters (e.g. authentication) defined in
@@ -45,12 +50,28 @@ RSpec.describe "/tasks", type: :request do
 
   describe "POST /create" do
     context "with valid parameters" do
-      it "creates a new Task" do
+      it "creates a new Task with no labels" do
         expect {
           post tasks_url,
                params: { task: valid_attributes }, headers: valid_headers, as: :json
         }.to change(Task, :count).by(1)
       end
+
+      it "creates a new Task with one labels" do
+        expect {
+          post tasks_url,
+               params: { task: task_one_label }, headers: valid_headers, as: :json
+        }.to change(Task, :count).by(1)
+      end
+
+      it "creates a new Task with two labels" do
+        expect {
+          post tasks_url,
+               params: { task: task_two_labels }, headers: valid_headers, as: :json
+        }.to change(Task, :count).by(1)
+      end
+
+      pending 'creates a new Task with a new label and add another that already exists'
 
       it "renders a JSON response with the new task" do
         post tasks_url,
@@ -72,7 +93,7 @@ RSpec.describe "/tasks", type: :request do
         post tasks_url,
              params: { task: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
   end
@@ -80,7 +101,7 @@ RSpec.describe "/tasks", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { title: 'Reading Korean', minutes: 30 }
       }
 
       it "updates the requested task" do
@@ -88,7 +109,7 @@ RSpec.describe "/tasks", type: :request do
         patch task_url(task),
               params: { task: new_attributes }, headers: valid_headers, as: :json
         task.reload
-        skip("Add assertions for updated state")
+        expect({ title: task.title, minutes: task.minutes }).to eq(new_attributes)
       end
 
       it "renders a JSON response with the task" do
@@ -106,14 +127,23 @@ RSpec.describe "/tasks", type: :request do
         patch task_url(task),
               params: { task: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested task" do
+    # Currently if you destroy a task, it is still being referenced on task_labels
+    # You need to also destroy that instance with dependent destroy
+    it "destroys the requested task with no labels" do
       task = Task.create! valid_attributes
+      expect {
+        delete task_url(task), headers: valid_headers, as: :json
+      }.to change(Task, :count).by(-1)
+    end
+
+    it "destroys the requested task with labels" do
+      task = Task.create! task_two_labels
       expect {
         delete task_url(task), headers: valid_headers, as: :json
       }.to change(Task, :count).by(-1)
