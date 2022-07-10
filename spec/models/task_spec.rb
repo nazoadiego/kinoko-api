@@ -2,7 +2,7 @@ require 'rails_helper'
 
 
 RSpec.describe Task, type: :model do
-  let!(:read_japanese) { create(:task) }
+  let!(:read_japanese) { build(:task) }
 
   # Associations tests
   it { should have_many(:task_labels) }
@@ -17,9 +17,9 @@ RSpec.describe Task, type: :model do
   # Method tests
   it 'returns the duration in hours and minutes' do
     expect(read_japanese.duration_in_hours).to eq('1h')
-    read_korean = create(:task, minutes: 61)
+    read_korean = build(:task, minutes: 61)
     expect(read_korean.duration_in_hours).to eq('1h 1min')
-    read_chinese = create(:task, minutes: 62)
+    read_chinese = build(:task, minutes: 62)
     expect(read_chinese.duration_in_hours).to eq('1h 2mins')
   end
 

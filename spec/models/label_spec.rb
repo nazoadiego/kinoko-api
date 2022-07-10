@@ -1,18 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe Label, type: :model do
-  let!(:read_japanese) { create(:task) }
-  let!(:read_korean) { create(:task, title: 'Read Korean') }
+  let!(:read_japanese) { build(:task) }
+  let!(:read_korean) { build(:task, title: 'Read Korean') }
   let!(:japanese_label) do
-    WorkSession.create!(task: read_japanese, minutes: 90)
+    create(:work_session, task: read_japanese)
     label = Label.new(title: 'Japanese')
     label.tasks << read_japanese
     label.save!
     label
   end
   let!(:korean_label) do
-    WorkSession.create!(task: read_korean, minutes: 30)
-    WorkSession.create!(task: read_korean, minutes: 90)
+    create(:work_session, task: read_korean)
+    create(:work_session, task: read_korean, minutes: 30)
     label = Label.new(title: 'Korean')
     label.tasks << read_korean
     label.save!
@@ -34,14 +34,14 @@ RSpec.describe Label, type: :model do
 
   # Methods
   it 'returns the total minutes spent for one work sessions' do
-    expect(japanese_label.time_spent).to eq(90)
+    expect(japanese_label.time_spent).to eq(60)
   end
 
   it 'returns the total minutes spent for many work sessions' do
-    expect(korean_label.time_spent).to eq(120)
+    expect(korean_label.time_spent).to eq(90)
   end
 
   it 'returns the total minutes spent when there are multiple tasks' do
-    expect(read_label.time_spent).to eq(210)
+    expect(read_label.time_spent).to eq(150)
   end
 end
