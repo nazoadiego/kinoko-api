@@ -1,6 +1,6 @@
 class Task < ApplicationRecord
   # Associations
-  has_many :task_labels
+  has_many :task_labels, dependent: :destroy
   has_many :labels, through: :task_labels
   has_many :work_sessions
 

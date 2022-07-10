@@ -71,7 +71,15 @@ RSpec.describe "/tasks", type: :request do
         }.to change(Task, :count).by(1)
       end
 
-      pending 'creates a new Task with a new label and add another that already exists'
+      it 'creates a new Task with a new label and add another that already exists' do
+        task_one_label[:labels] << Label.last
+
+        expect(task_one_label[:labels].size).to eq(2)
+        expect {
+          post tasks_url,
+               params: { task: task_one_label }, headers: valid_headers, as: :json
+        }.to change(Task, :count).by(1)
+      end
 
       it "renders a JSON response with the new task" do
         post tasks_url,
