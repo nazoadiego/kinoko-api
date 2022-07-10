@@ -2,32 +2,30 @@ require 'rails_helper'
 
 
 RSpec.describe Task, type: :model do
-  let!(:read_japanese) { Task.create!(title: 'Read Japanese', minutes: 62) }
-  let!(:read_korean) { Task.create!(title: 'Read Japanese', minutes: 61) }
-  let!(:read_chinese) { Task.create!(title: 'Read Japanese', minutes: 60) }
-  let!(:negative_minutes_task) { Task.create(title: 'Not reading Japanese!', minutes: -1) }
-  let!(:sixty_mins_work) { WorkSession.create(task: read_japanese, minutes: 60) }
-  let!(:thirty_mins_work) { WorkSession.create(task: read_japanese, minutes: 30) }
+  let!(:read_japanese) { create(:task) }
 
   # Associations tests
   it { should have_many(:task_labels) }
   it { should have_many(:labels) }
-  it { should have_many(:work_sessions)}
+  it { should have_many(:work_sessions) }
 
   # Validation tests
   it { should validate_presence_of(:title) }
   it { should validate_presence_of(:minutes) }
-  it { expect(negative_minutes_task).to be_invalid }
   it { should validate_numericality_of(:minutes).is_greater_than(0) }
 
   # Method tests
   it 'returns the duration in hours and minutes' do
-    expect(read_japanese.duration_in_hours).to eq('1h 2mins')
+    expect(read_japanese.duration_in_hours).to eq('1h')
+    read_korean = create(:task, minutes: 61)
     expect(read_korean.duration_in_hours).to eq('1h 1min')
-    expect(read_chinese.duration_in_hours).to eq('1h')
+    read_chinese = create(:task, minutes: 62)
+    expect(read_chinese.duration_in_hours).to eq('1h 2mins')
   end
 
   it 'returns the total of minutes spent in all its work sessions' do
+    WorkSession.create(task: read_japanese, minutes: 60)
+    WorkSession.create(task: read_japanese, minutes: 30)
     expect(read_japanese.time_spent).to eq(90)
   end
 end

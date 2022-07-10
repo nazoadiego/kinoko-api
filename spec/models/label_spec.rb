@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Label, type: :model do
-  let!(:read_japanese) { Task.create!(title: 'Read Japanese', minutes: 62) }
-  let!(:read_korean) { Task.create!(title: 'Read Korean', minutes: 62) }
+  let!(:read_japanese) { create(:task) }
+  let!(:read_korean) { create(:task, title: 'Read Korean') }
   let!(:japanese_label) do
     WorkSession.create!(task: read_japanese, minutes: 90)
     label = Label.new(title: 'Japanese')
