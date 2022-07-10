@@ -5,7 +5,7 @@ RSpec.describe Task, type: :model do
   let!(:read_japanese) { build(:task) }
 
   # Associations tests
-  it { should have_many(:task_labels) }
+  it { should have_many(:task_labels).dependent(:destroy) }
   it { should have_many(:labels) }
   it { should have_many(:work_sessions) }
 

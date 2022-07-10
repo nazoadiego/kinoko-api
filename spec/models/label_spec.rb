@@ -26,7 +26,7 @@ RSpec.describe Label, type: :model do
   end
 
   # Associations tests
-  it { should have_many(:task_labels) }
+  it { should have_many(:task_labels).dependent(:destroy) }
   it { should have_many(:tasks) }
 
   # Validation tests
