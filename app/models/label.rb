@@ -9,4 +9,8 @@ class Label < ApplicationRecord
   def time_spent
     tasks.inject(0) { |total, task| total + task.time_spent }
   end
+
+  def average_session
+    tasks.time_spent / tasks.work_sessions.count
+  end
 end

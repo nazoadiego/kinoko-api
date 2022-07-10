@@ -25,6 +25,10 @@ class Task < ApplicationRecord
     work_sessions.inject(0) { |total, session| total + session.minutes }
   end
 
+  def average_session
+    time_spent / work_sessions.count
+  end
+
   private
 
   def pluralize(unit, quantity)

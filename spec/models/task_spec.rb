@@ -28,4 +28,6 @@ RSpec.describe Task, type: :model do
     WorkSession.create(task: read_japanese, minutes: 30)
     expect(read_japanese.time_spent).to eq(90)
   end
+
+  pending 'average_session method should return the correct amount'
 end

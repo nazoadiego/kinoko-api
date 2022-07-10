@@ -1,7 +1,17 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+# To repopulate run rails db:seed:replant
+
+puts "A farmer has appeared to populate your db"
+
+label_one = FactoryBot.create(:label)
+label_two = FactoryBot.create(:label, title: 'Read')
+task = FactoryBot.create(:task, labels: [label_one, label_two])
+FactoryBot.create(:work_session, task: task)
+FactoryBot.create(:work_session, task: task)
+
+puts "."
+puts " ."
+puts "  ."
+puts " ."
+puts "."
+puts "....."
+puts "Seeds have been planted. The farmer dissapears into the sunset"

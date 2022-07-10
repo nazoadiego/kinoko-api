@@ -44,4 +44,6 @@ RSpec.describe Label, type: :model do
   it 'returns the total minutes spent when there are multiple tasks' do
     expect(read_label.time_spent).to eq(150)
   end
+
+  pending 'average_session method should return the correct amount'
 end
